@@ -74,7 +74,7 @@ Start Qwen Code / Claude Code in your project directory and ask:
 ### Look up a card by ID
 ```bash
 python scripts/ydkshow.py 14558127
-# 灰流丽 14558127lim2 2017-01-14 效果 3·炎·不死 0/1800 ...
+# 灰流丽 14558127lim2 2017-01-14 效果调整 3·炎·不死 0/1800 ...
 ```
 
 ### Search cards by keyword
