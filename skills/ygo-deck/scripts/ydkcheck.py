@@ -38,6 +38,8 @@ TYPE_NAMES = ' 魔法 陷阱  通常  融合 仪式  灵魂 同盟 二重 调整
 LINK_DIR = '↙↓↘←-→↖↑↗'
 
 # ── 数据库加载 ──
+
+
 def load_db():
     con = connect('cards.cdb')
     cur = con.cursor()
@@ -61,6 +63,7 @@ def load_db():
     con.close()
     return cards
 
+
 def load_lflist():
     """返回 {card_id: limit} limit: 0=禁,1=限1,2=限2"""
     lf = {}
@@ -79,6 +82,8 @@ def load_lflist():
     return lf
 
 # ── YDK解析 ──
+
+
 def parse_ydk(path):
     main_deck, extra_deck, side_deck = [], [], []
     section = None
@@ -102,6 +107,8 @@ def parse_ydk(path):
     return main_deck, extra_deck, side_deck
 
 # ── 检查结果收集 ──
+
+
 class CheckResult:
     def __init__(self):
         self.errors = []
@@ -130,6 +137,8 @@ class CheckResult:
         return '\n'.join(lines)
 
 # ── 检查函数 ──
+
+
 def check_basic(main_deck, extra_deck, cards, lf):
     """基础计数检查"""
     r = CheckResult()
@@ -163,6 +172,7 @@ def check_basic(main_deck, extra_deck, cards, lf):
     # Total
     r.info(f"总卡数={main_count + extra_count}张")
     return r
+
 
 def check_duplicates(main_deck, extra_deck, cards, lf):
     """同名卡检查(含alias处理)"""
@@ -216,6 +226,7 @@ def check_duplicates(main_deck, extra_deck, cards, lf):
         r.info(f"已达3张上限: {', '.join(names)}")
 
     return r
+
 
 def check_lflist(main_deck, extra_deck, cards, lf):
     """禁限卡表检查"""
@@ -278,6 +289,7 @@ def check_lflist(main_deck, extra_deck, cards, lf):
 
     return r
 
+
 def check_card_types(main_deck, extra_deck, cards, lf):
     """卡片类型比例检查"""
     r = CheckResult()
@@ -317,6 +329,7 @@ def check_card_types(main_deck, extra_deck, cards, lf):
         r.info(f"怪兽中效果: {len(effects)}, 通常: {len(normals)}")
 
     return r
+
 
 def check_extra_summonability(extra_deck, main_deck, cards, lf):
     """额外怪兽可召唤性检查"""
@@ -390,6 +403,7 @@ def check_extra_summonability(extra_deck, main_deck, cards, lf):
 
     r.info("注意: 精确召唤条件需人工阅读效果文本确认")
     return r
+
 
 def check_t0t1_start(main_deck, cards, lf, n_samples=None):
     """T0/T1起手率模拟"""
@@ -504,6 +518,7 @@ def check_t0t1_start(main_deck, cards, lf, n_samples=None):
 
     return r
 
+
 def check_card_usability(main_deck, extra_deck, cards, lf):
     """卡片可用性粗略检查"""
     r = CheckResult()
@@ -553,6 +568,7 @@ def check_card_usability(main_deck, extra_deck, cards, lf):
                 r.info(f"  '{c['name']}': 需要支付LP, 确认资源管理")
 
     return r
+
 
 def check_quality_score(main_deck, extra_deck, cards, lf):
     """质量评分"""
@@ -686,6 +702,8 @@ def check_quality_score(main_deck, extra_deck, cards, lf):
     return r
 
 # ── 主函数 ──
+
+
 def run_checks(ydk_path, section='all'):
     cards = load_db()
     lf = load_lflist()
@@ -735,6 +753,7 @@ def run_checks(ydk_path, section='all'):
     else:
         print("结果: 全部通过")
         return 0
+
 
 if __name__ == '__main__':
     args = [a for a in argv[1:] if not a.startswith('--section=')]
