@@ -18,7 +18,7 @@ COLOR = int(getenv('COLOR', stdout.isatty()))
 LF = {}
 for diy, i in enumerate((f'{ROOT}/lflist.conf', f'{ROOT}/expansions/lflist.conf')):
     if path.exists(i):
-        for i in open(i).read().split('\n!')[1:]:
+        for i in open(i).read().split('\n!')[:0:-1]:
             ot, _, i = i.partition('\n')
             t, _, ot = ot.partition(' ')
             ot = 'DIY'if diy else ot or 'OCG'
@@ -26,9 +26,8 @@ for diy, i in enumerate((f'{ROOT}/lflist.conf', f'{ROOT}/expansions/lflist.conf'
             # print(ot, t, lf)
             for i, j in lf.items():
                 lfs = LF.setdefault(ot, {}).setdefault(i, {})
-                if lfs and list(lfs.values())[-1] == j:
-                    del lfs[list(lfs)[-1]]
-                lfs[t] = j
+                if not lfs or list(lfs.values())[-1] != j:
+                    lfs[t] = j
             for i, lfs in LF[ot].items():
                 if i not in lf and lfs and list(lfs.values())[-1] != 3:
                     LF[ot][i][t] = 3
